@@ -1,0 +1,12 @@
+dotnet new webapi -n MyWebAPI -o ./src/MyWebAPI
+dotnet new sln -n MyWebAPI -o ./MyWebAPI
+dotnet sln ./MyWebAPI.sln add ./src/MyWebAPI/MyWebAPI.csproj
+
+dotnet restore
+dotnet run --project ./src/MyWebAPI/MyWebAPI.csproj
+
+cd ./MyWebAPI/src/MyWebAPI
+dotnet publish -c Release -r linux-x64
+cp ./Dockerfile* ./bin/Release/netcoreapp2.0/linux-x64/publish/
+docker build -t mywebapi:latest .
+docker run -d --name mywebapi --publish 8000:8000 mywebapi:latest

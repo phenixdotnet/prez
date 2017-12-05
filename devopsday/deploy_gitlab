@@ -1,0 +1,16 @@
+sudo docker run --detach \
+    --hostname gitlab.phenix.local \
+    --publish 443:443 --publish 80:80 \
+    --name gitlab \
+    --restart always \
+    --volume $HOME/gitlab/config:/etc/gitlab \
+    --volume $HOME/gitlab/logs:/var/log/gitlab \
+    --volume $HOME/gitlab/data:/var/opt/gitlab \
+    gitlab/gitlab-ee:latest
+
+
+docker run -d --name gitlab-runner --restart always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $HOME/gitlab-runner/config:/etc/gitlab-runner \
+  --link gitlab \
+  gitlab/gitlab-runner:latest
