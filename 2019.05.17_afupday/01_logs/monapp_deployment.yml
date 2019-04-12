@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monapp-deployment
+  labels:
+    app: monapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monapp
+  template:
+    metadata:
+      labels:
+        app: monapp
+    spec:
+      volumes:
+        - name: shared-logs 
+          emptyDir: {}
+        - name: monapp-filebeat-configvolume
+          configMap:
+            name: monapp-filebeat-configmap
+            items:
+            - key: filebeat.yml
+              path: filebeat.yml
+            - key: nginx.yml
+              path: modules.d/nginx.yml
+      containers:
+      - name: monapp
+        image: phenixdotnet.azurecr.io/monapp:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: shared-logs
+            mountPath: /var/log
+        resources:
+          limits:
+            memory: 128Mi
+      - name: filebeat
+        image: docker.elastic.co/beats/filebeat:6.7.1
+        command: ["filebeat", "--path.config", "/etc/filebeat/"]
+        volumeMounts:
+          - name: shared-logs
+            mountPath: /var/log
+          - name: monapp-filebeat-configvolume
+            mountPath: /etc/filebeat
+        resources:
+          limits:
+            memory: 128Mi
+      imagePullSecrets:
+        - name: phenixdotnetregistry
