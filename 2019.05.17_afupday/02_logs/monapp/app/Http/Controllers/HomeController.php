@@ -9,6 +9,7 @@ class HomeController extends Controller
     public function show()
     {
         Log::info("call HomeController");
+
         return view('welcome');
     }
 }
