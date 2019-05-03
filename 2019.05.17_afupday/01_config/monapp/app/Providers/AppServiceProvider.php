@@ -26,22 +26,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Set CONSUL_HTTP_ADDR env to change consul url
-        $sf = new \SensioLabs\Consul\ServiceFactory();
-        $kv = $sf->get(\SensioLabs\Consul\Services\KVInterface::class);
+        if (env("USE_CONSUL")) {
+            // Set CONSUL_HTTP_ADDR env to change consul url
+            $sf = new \SensioLabs\Consul\ServiceFactory();
+            $kv = $sf->get(\SensioLabs\Consul\Services\KVInterface::class);
 
-        $results = $kv->get(config("app.env") . "/monapp");
-        $config = json_decode(base64_decode($results->json()[0]["Value"]), true);
+            $results = $kv->get(config("app.env") . "/monapp");
+            $config = json_decode(base64_decode($results->json()[0]["Value"]), true);
 
-        $_ENV = array_merge($_ENV, $config);
+            $_ENV = array_merge($_ENV, $config);
 
-        // Rebuild configuration
-        if (file_exists($cached = app()->getCachedConfigPath())) {
-            unlink($cached);
+            // Rebuild configuration
+            if (file_exists($cached = app()->getCachedConfigPath())) {
+                unlink($cached);
+            }
+
+            $loadConfiguration = new LoadConfiguration();
+            $loadConfiguration->bootstrap(app());
         }
-
-        $loadConfiguration = new LoadConfiguration();
-        $loadConfiguration->bootstrap(app());
-
     }
 }
