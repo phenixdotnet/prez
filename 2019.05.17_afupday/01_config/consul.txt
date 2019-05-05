@@ -1,7 +1,7 @@
 {
-  "DB_HOST": "127.0.0.1",
+  "DB_HOST": "postgres.default.svc.cluster.local",
 	"DB_PORT": "5432",
-	"DB_DATABASE": "monapp",
+	"DB_DATABASE": "postgres",
 	"DB_USERNAME": "postgres",
-	"DB_PASSWORD": "W3lc0m"
+	"DB_PASSWORD": "W3lc0m0cl3W"
 }

@@ -19,6 +19,7 @@ spec:
         image: consul
         ports:
         - containerPort: 8500
+        - containerPort: 8200
 
 ---
 kind: Service
@@ -30,5 +31,10 @@ spec:
     app: consul
   ports:
   - protocol: TCP
+    name: ui
     port: 8500
     targetPort: 8500
+  - protocol: TCP
+    name: app
+    port: 8200
+    targetPort: 8200
