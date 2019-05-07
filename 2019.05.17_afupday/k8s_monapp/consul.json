@@ -1,0 +1,10 @@
+{
+  "APP_NAME": "CONSULLLLL",
+  "DB_HOST": "postgres.default.svc.cluster.local",
+	"DB_PORT": "5432",
+	"DB_DATABASE": "postgres",
+	"DB_USERNAME": "postgres",
+	"DB_PASSWORD": "W3lc0m0cl3W",
+  "LOG_CHANNEL": "elasticsearch",
+  "LOGS_ELASTICSEARCH_URL": "elasticsearch.default.svc.cluster.local"
+}

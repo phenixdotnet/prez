@@ -31,7 +31,7 @@ spec:
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
-            name: monapp-config-env-file
+            name: monapp-config-consul-env-file
         ports:
         - containerPort: 80
         volumeMounts:
